@@ -46,4 +46,4 @@ This project is licensed under the MIT License.
 
 ---
 
-You can find more information and support on my GitHub page: [darky404](https://github.com/darky404/odoo).
+You can find more information and support on my GitHub page: [darky404](https://github.com/darkyy404/odoo).
