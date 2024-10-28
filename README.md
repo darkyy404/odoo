@@ -25,7 +25,7 @@ This repository contains a Python script to automate the installation of Odoo 17
 2. **Run the installation script**:
 
     ```bash
-    sudo python3 install_odoo.py
+    sudo python3 odooInstaller.py
     ```
 
 ## Manual Configuration
