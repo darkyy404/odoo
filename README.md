@@ -18,7 +18,7 @@ This repository contains a Python script to automate the installation of Odoo 17
 1. **Clone this repository**:
 
     ```bash
-    git clone https://github.com/darky404/odoo.git
+    git clone https://github.com/darkyy404/odoo.git
     cd odoo
     ```
 
