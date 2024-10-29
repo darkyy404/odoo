@@ -3,9 +3,9 @@ import subprocess
 
 # Configuraciones de instalación
 odoo_user = "odoo"
-odoo_password = "Qwerty123@"  # Contraseña de usuario de Odoo
+odoo_password = "Qwerty123@"  # Cambiar esta contraseña de usuario de Odoo según tus preferencias
 db_user = "odoo_db_user"
-db_password = "Qwerty123@"  # Contraseña de usuario de base de datos
+db_password = "Qwerty123@"  # Cambiar esta contraseña de usuario de base de datos según tus preferencias
 
 def run_command(command):
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
@@ -13,11 +13,6 @@ def run_command(command):
         print(f"Error ejecutando: {command}\n{result.stderr}")
     else:
         print(f"Comando ejecutado correctamente: {command}")
-
-# Actualización de repositorios
-def update_repos():
-    print("Actualizando repositorios...")
-    run_command("sudo apt update && sudo apt upgrade -y")
 
 # Instalación de dependencias de Odoo
 def install_dependencies():
@@ -74,6 +69,11 @@ def create_odoo_user():
     run_command(f"sudo mkdir /var/log/{odoo_user}")
     run_command(f"sudo chown {odoo_user}:{odoo_user} /var/log/{odoo_user}")
 
+# Asignación de permisos completos a la carpeta de Odoo
+def set_permissions():
+    print("Asignando permisos a la carpeta de Odoo...")
+    run_command(f"sudo chown -R {odoo_user}:{odoo_user} /opt/{odoo_user}")
+
 # Descarga de Odoo Community
 def download_odoo():
     print("Descargando Odoo 17 Community...")
@@ -124,11 +124,11 @@ WantedBy=multi-user.target
     run_command(f"sudo systemctl start {odoo_user}.service")
 
 def main():
-    update_repos()
     install_dependencies()
     install_wkhtmltopdf()
     setup_postgresql()
     create_odoo_user()
+    set_permissions()  # Asignación de permisos
     download_odoo()
     setup_virtualenv()
     setup_odoo_config()
