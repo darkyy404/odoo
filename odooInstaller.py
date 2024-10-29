@@ -33,9 +33,7 @@ def install_dependencies():
 # Instalación de wkhtmltopdf para generación de PDF
 def install_wkhtmltopdf():
     print("Instalando wkhtmltopdf para generación de PDF...")
-    # Descarga la versión compatible de wkhtmltopdf
     run_command("wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb -P /tmp")
-    # Instala el paquete
     run_command("sudo apt install -y /tmp/wkhtmltox_0.12.6.1-2.jammy_amd64.deb")
 
 # Configuración de PostgreSQL
@@ -46,9 +44,27 @@ def setup_postgresql():
     run_command(f"sudo -u postgres createuser -s {db_user}")
     run_command(f"sudo -u postgres psql -c \"ALTER USER {db_user} WITH PASSWORD '{db_password}';\"")
 
-    # Configuración de autenticación md5
-    with open("/etc/postgresql/14/main/pg_hba.conf", "a") as pg_hba:
-        pg_hba.write(f"local   all             {db_user}                                md5\n")
+    # Configuración de autenticación en pg_hba.conf
+    pg_hba_conf = """
+# Configuración de autenticación para PostgreSQL con md5 y scram-sha-256
+
+# Conexiones locales con md5
+local   all             postgres                                md5
+local   all             all                                     md5
+local   replication     all                                     md5
+local   all             odoo_db_user                            md5
+
+# Conexiones IPv4 locales con scram-sha-256
+host    all             all             127.0.0.1/32            scram-sha-256
+host    replication     all             127.0.0.1/32            scram-sha-256
+
+# Conexiones IPv6 locales con scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
+host    replication     all             ::1/128                 scram-sha-256
+"""
+    # Sobrescribiendo pg_hba.conf con la configuración actualizada
+    with open("/etc/postgresql/14/main/pg_hba.conf", "w") as pg_hba:
+        pg_hba.write(pg_hba_conf)
     run_command("sudo systemctl restart postgresql")
 
 # Creación de usuario de sistema para Odoo
@@ -121,4 +137,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
