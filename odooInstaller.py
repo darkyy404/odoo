@@ -68,7 +68,8 @@ def setup_virtualenv():
     print("Configurando ambiente virtual y dependencias de Python...")
     run_command(f"sudo python3 -m venv /opt/{odoo_user}/venv")
     run_command(f"sudo chown -R {odoo_user}:{odoo_user} /opt/{odoo_user}/venv")
-    run_command(f"source /opt/{odoo_user}/venv/bin/activate && pip install -r /opt/{odoo_user}/requirements.txt --break-system-packages")
+    # Utiliza directamente el pip del entorno virtual para instalar dependencias
+    run_command(f"/opt/{odoo_user}/venv/bin/pip install -r /opt/{odoo_user}/requirements.txt --break-system-packages")
 
 # Configuración de Odoo
 def setup_odoo_config():
@@ -121,3 +122,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
