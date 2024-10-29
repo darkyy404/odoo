@@ -14,6 +14,11 @@ def run_command(command):
     else:
         print(f"Comando ejecutado correctamente: {command}")
 
+# Actualización de repositorios
+def update_repos():
+    print("Actualizando repositorios...")
+    run_command("sudo apt update && sudo apt upgrade -y")
+
 # Instalación de dependencias de Odoo
 def install_dependencies():
     print("Instalando dependencias necesarias para Odoo...")
@@ -77,7 +82,7 @@ def set_permissions():
 # Descarga de Odoo Community
 def download_odoo():
     print("Descargando Odoo 17 Community...")
-    run_command(f"sudo git clone --depth 1 --branch 17.0 https://github.com/odoo/odoo /opt/{odoo_user}")
+    run_command(f"sudo git clone https://github.com/odoo/odoo /opt/{odoo_user}")
 
 # Configuración de ambiente virtual y dependencias Python
 def setup_virtualenv():
@@ -124,6 +129,7 @@ WantedBy=multi-user.target
     run_command(f"sudo systemctl start {odoo_user}.service")
 
 def main():
+    update_repos()
     install_dependencies()
     install_wkhtmltopdf()
     setup_postgresql()
