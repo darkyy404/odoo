@@ -30,6 +30,14 @@ def install_dependencies():
     ]
     run_command("sudo apt install -y " + " ".join(dependencies))
 
+# Instalación de wkhtmltopdf para generación de PDF
+def install_wkhtmltopdf():
+    print("Instalando wkhtmltopdf para generación de PDF...")
+    # Descarga la versión compatible de wkhtmltopdf
+    run_command("wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb -P /tmp")
+    # Instala el paquete
+    run_command("sudo apt install -y /tmp/wkhtmltox_0.12.6.1-2.jammy_amd64.deb")
+
 # Configuración de PostgreSQL
 def setup_postgresql():
     print("Instalando y configurando PostgreSQL...")
@@ -102,6 +110,7 @@ WantedBy=multi-user.target
 def main():
     update_repos()
     install_dependencies()
+    install_wkhtmltopdf()
     setup_postgresql()
     create_odoo_user()
     download_odoo()
